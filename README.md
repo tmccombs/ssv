@@ -34,6 +34,13 @@ Records (rows) are separated by '\\x1e\\n' (Record Separator [RS] and newline [L
 
 Fields are separated by '\\x1f\\t' (Unit Separator [US] and tab [HT])
 
+The final record of an SSV file **SHOULD** end with a final record delimiter (`\x1e\n`). That is the file as
+a whole should end with a record delimiter. This allows multiple files to be easily concatenated together.
+
+An application (or library) that reads an SSV file **SHOULD** allow the final record to omit the record delimiter at the
+end and treat the text between the last record delimiter and the end of file as a valid record. However, if the file ends
+with a record delimiter the application (or library) **MUST NOT** treat that as a final empty record.
+
 
 # "Compact" Separator Separated Values
 

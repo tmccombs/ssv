@@ -30,8 +30,9 @@ def reader(ssvfile: TextIO, is_compact=False) -> Iterator[List[str]]:
     while True:
         chunk = ssvfile.read(CHUNK_SIZE)
         if len(chunk) == 0:
-            yield buffer.split(fs)
-            return 
+            if len(buffer) > 0:
+                yield buffer.split(fs)
+            return
         buffer = buffer + chunk
         records = buffer.split(rs)
         if len(records) < 2:

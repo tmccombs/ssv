@@ -5,7 +5,8 @@ import ssv
 
 SAMPLE_SSV = """A\x1f\tB\x1f\tC\x1e
 "A fox", said the bear.\nHow nice.\x1f\t1.4\x1f\t\tD\tC\tE\x1e
-BLah\x1f\t\x1f\t\n\t"'\\"""
+BLah\x1f\t\x1f\t\n\t"'\\\x1e
+"""
 
 
 class SsvTest(unittest.TestCase):
@@ -32,7 +33,7 @@ class SsvTest(unittest.TestCase):
                 ["BLah", "", "\n\t\"'\\"],
             ]
         )
-        self.assertEqual(out.getvalue(), SAMPLE_SSV + "\x1e\n")
+        self.assertEqual(out.getvalue(), SAMPLE_SSV)
 
     def test_reader_compact(self):
         input = StringIO(SAMPLE_SSV)
@@ -44,6 +45,7 @@ class SsvTest(unittest.TestCase):
                 ["A", "\tB", "\tC"],
                 ["""\n"A fox", said the bear.\nHow nice.""", "\t1.4", "\t\tD\tC\tE"],
                 ["\nBLah", "\t", "\t\n\t\"'\\"],
+                ["\n"],
             ],
         )
 
@@ -59,4 +61,15 @@ class SsvTest(unittest.TestCase):
         )
         self.assertEqual(
             out.getvalue(), "A\x1fB\x1fC\x1e1\x1f3.14159\x1f\t\x1eFoo\n\x1fDog\x1f\x1e"
+        )
+
+    def test_read_mising_final_delimiter(self):
+        input = StringIO("A\x1f\tB\x1e\nC\x1f\tD")
+        reader = ssv.reader(input)
+        self.assertSequenceEqual(
+            list(reader),
+            [
+                ["A", "B"],
+                ["C", "D"],
+            ],
         )
