@@ -30,7 +30,8 @@ def reader(ssvfile: TextIO, is_compact=False) -> Iterator[List[str]]:
     while True:
         chunk = ssvfile.read(CHUNK_SIZE)
         if len(chunk) == 0:
-            return buffer.split(fs)
+            yield buffer.split(fs)
+            return 
         buffer = buffer + chunk
         records = buffer.split(rs)
         if len(records) < 2:
@@ -54,7 +55,7 @@ class Writer:
         self._file.write(self.rs)
 
 
-def writer(ssvfile: TextIO, is_compact: bool):
+def writer(ssvfile: TextIO, is_compact: bool = False):
     return Writer(ssvfile, is_compact)
 
 
