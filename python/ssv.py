@@ -11,7 +11,7 @@ def _separators(is_compact: bool) -> Tuple[str, str]:
     if is_compact:
         return "\x1e", "\x1f"
     else:
-        return "\n\x1e", "\t\x1f"
+        return "\x1e\n", "\x1f\t"
 
 
 def reader(ssvfile: TextIO, is_compact=False) -> Iterator[List[str]]:

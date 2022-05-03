@@ -21,8 +21,8 @@ conflicting with the delimiters.
 
 Unfortunately, these characters are non-printing, so displaying the file on a terminal or in a
 text editor isn't as human friendly as CSV or TSV. This is somewhat alleviated by making the
-delimiter include a whitespace character as well, so the actual delimiters are `\t\x1f` for the
-field delimiter and `\n\x1e` for the record delimiter. Which means when printed to terminal for
+delimiter include a whitespace character as well, so the actual delimiters are `\x1f\t` for the
+field delimiter and `\x1e\n` for the record delimiter. Which means when printed to terminal for
 example, it will look similar to a TSV file.
 
 
@@ -30,9 +30,9 @@ example, it will look similar to a TSV file.
 
 Text is encoded as UTF-8.
 
-Records (rows) are separated by '\\n\\x1e' (newline [LF] and Record Separator [RS])
+Records (rows) are separated by '\\x1e\\n' (Record Separator [RS] and newline [LF])
 
-Fields are separated by '\\t\\x1f' (tab [HT] and Unit Separator [US])
+Fields are separated by '\\x1f\\t' (Unit Separator [US] and tab [HT])
 
 
 # "Compact" Separator Separated Values
